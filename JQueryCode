@@ -1,0 +1,131 @@
+$.fn.switchOn = function(id) {
+	var pos = ["60px", "5px", "30px", "5px", "40px"];
+	var index = id.substring(3, 4);
+    var nID = "div#" + id + " > div";
+	
+	$(nID).animate({left: 208}, {duration: "slow", queue: false, 
+		complete: function() {
+			$(nID + "> p").text("ON");}
+		})
+		.css("backgroundColor", "green");
+	
+	var cls = "div#" + id + " > div";
+	var content = "#" + $(cls).attr("class");
+	
+	if($(cls).text() === "OFF") {
+		$(content).css("marginTop", pos[index - 1]).slideDown("slow", 
+			function() {
+				$(".welcome").slideUp("slow");
+			}				
+		);
+	}
+	
+	for (var i = 1; i < 6; i++) {
+		var flag = "div#opt" + i + " > div > p";
+		if(id !== "opt" + i) {
+			if($(flag).text() === "ON") {
+				$.fn.switchOff("opt" + i);
+			}
+		}
+	}
+};
+
+$.fn.switchOff = function(id) {
+	var nID = "div#" + id + " > div";
+	$(nID).animate({left: 0}, {duration: "slow", queue: false, 
+		complete: function() {
+			$(nID + "> p").text("OFF");}
+		})
+		.css("backgroundColor", "red");
+	
+	var cls = "div#" + id + " > div";
+	var content = "#" + $(cls).attr("class");
+	
+	if($(cls).text() === "ON") {
+		$(".welcome").slideDown("slow", 
+			function() {
+				$(content).slideUp("slow");
+			}				
+		);
+	}			
+};
+ 
+  
+$(document).ready(function() {
+	$('body').css('display', 'none');
+	$('body').fadeIn(1000);
+	
+	$("#menu a").hover(
+		function() {
+			$(this).parent().css("backgroundColor", "#71da71");
+			$(this).css("color", "white");
+		},
+		function() {
+			$(this).parent().css("backgroundColor", "#99ff99");
+			$(this).css("color", "#00004d");
+		}
+		
+	);
+	
+	$("#menu a").click(
+		function(){
+			var flag = "div#" + $(this).attr("class") + " > div > p";
+			if($(flag).text() === "OFF") {
+				$.fn.switchOn($(this).attr("class"));
+			}
+			else {
+				$.fn.switchOff($(this).attr("class"));
+			}
+			
+		}
+		
+	);
+	
+	var ulCounter = $("div#skills").children("ul").length;
+	var clsB = ["orange", "blue", "green", "purple", "gold"];
+	for(var i = 0; i < ulCounter; i++){
+		var l = $("div#skills").children("ul").eq(i).children("li").length;
+		for(var j = 0; j < l; j++){
+			$("div#skills").children("ul").eq(i).children("li").eq(j).addClass(clsB[j]);
+		}
+	}
+	
+	var hCounter = $("h3").length;
+	var z = 0;
+	for(var i = 0; i < hCounter; i++){
+		
+		if(i >= clsB.length) {
+			$("h3").eq(i).addClass(clsB[z]);
+			z++;
+		}
+		else {
+			$("h3").eq(i).addClass(clsB[i]);
+		}
+	
+	}
+	
+	$(".office").hide();
+	$(".micro").hover(
+		function() {$(this).css("backgroundColor", "#71da71").css("color", "white")},
+		function() {$(this).css("backgroundColor", "#99ff99").css("color", "#00004d")}
+	);
+	
+	$(".micro").click(
+		function() {
+			$(".office").fadeIn("slow");
+		}
+	);
+	
+	$(".contact").click(function() {
+		$("#win").show();
+	});
+	$(".wClose").click(function() {
+		$("#win").hide();
+	});
+	
+	$(".shadow").click(function() {
+		location.href = "../index.html";
+	});
+		
+	
+});
